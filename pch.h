@@ -5,8 +5,8 @@
 //
 // Note: Precompile header
 //
-// Compiler: VC14.2
-// Library:  OWL6.44
+// Compiler: VC14.3
+// Library:  OWL7
 //
 
 #ifndef pch_h
