@@ -5,7 +5,7 @@
 //
 // Note: version
 //
-// Compiler: VC14.2
+// Compiler: VC14.3
 //
 
 #ifndef version_h

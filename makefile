@@ -5,7 +5,7 @@
 # Project LegacyPrintDlg
 # Copyright (C) 2025 neige68
 #
-# Compiler:  VC14.2
+# Compiler:  VC14.3
 #
 
 def:
