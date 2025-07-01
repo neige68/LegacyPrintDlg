@@ -1,0 +1,21 @@
+// <pch.h>
+//
+// Project LegacyPrintDlg
+// Copyright (C) 2025 neige68
+//
+// Note: Precompile header
+//
+// Compiler: VC14.2
+// Library:  OWL6.44
+//
+
+#ifndef pch_h
+#define pch_h
+
+//#define _OWLALLPCH
+#define _OWLPCH
+#include <owl/pch.h>
+
+#endif // pch_h
+
+// end of <pch.h>

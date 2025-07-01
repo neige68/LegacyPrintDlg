@@ -1,0 +1,23 @@
+// <res.rh> -*- c++ -*-
+//
+// Project LegacyPrintDlg
+// Copyright (C) 2025 neige68
+//
+// Note: Resource IDs
+//
+// Compiler: VC14.2
+// Library:  OWL6.44
+//
+
+// このファイルを ResEdit, Visual Studio IDE で編集してはいけない。
+// Visual Studio IDE で編集するのは resource.rc, resource.h とする。
+
+#include "resource.h"           // Visual Studio IDE 編集用
+
+// アイコン 5000 から
+#define IDI_APP                                 5000
+
+// 文字列 17000 から 
+#define IDS_APPNAME                             17000
+
+// end of <res.rh>

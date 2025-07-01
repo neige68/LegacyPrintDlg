@@ -1,0 +1,113 @@
+// <res.rc> -*- coding: cp932-dos -*-
+//
+// Project LegacyPrintDlg
+// Copyright (C) 2025 neige68
+//
+// Note: Resource Script
+//
+// Compiler: VC14.2
+// Library:  OWL6.44
+//
+
+// このファイルを ResEdit, Visual Studio IDE で編集してはいけない。
+// Visual Studio IDE で編集するのは resource.rc, resource.h とする。
+
+#include <owl/version.h>
+#include <owl/except.rh>
+
+#include "version.h"
+
+#include "res.rh"
+
+//------------------------------------------------------------
+
+#include <owl/except.rc>
+
+//------------------------------------------------------------
+
+//
+// Version Information resources
+//
+1 VERSIONINFO
+    FILEVERSION     VER_FILEVERSION
+    PRODUCTVERSION  VER_PRODUCTVERSION
+    FILEOS          VOS__WINDOWS32
+    FILETYPE        VFT_APP
+#ifdef NDEBUG    
+    FILEFLAGSMASK   0
+    FILEFLAGS       0
+#else
+    FILEFLAGSMASK VS_FF_DEBUG | VS_FF_SPECIALBUILD
+    FILEFLAGS VS_FFI_FILEFLAGSMASK
+#endif
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "041103A4" // 日本語(0x411), シフトJIS(CP932)(0x3a4)
+        {
+            VALUE "CompanyName", VER_COMPANYNAME // "\000"
+            VALUE "FileDescription", VER_FILEDESCRIPTION // "\000"
+            VALUE "FileVersion", VER_FILEVERSION_STR // "\000"
+            VALUE "InternalName", "DLGAPP" // "\000"
+            VALUE "LegalCopyright", VER_LEGALCOPYRIGHT // "\000"
+            VALUE "OriginalFilename", "DLGAPP.EXE" // "\000"
+            VALUE "ProductName", VER_PRODUCTNAME // "\000"
+            VALUE "ProductVersion", VER_PRODUCTVERSION_STR // "\000"
+#ifdef NDEBUG
+#else
+            VALUE "SpecialBuild", "Debug Version" // "\000"
+#endif
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0411, 0x03a4
+    }
+}
+
+//
+// Icon resources
+//
+IDI_APP            ICON           "neige.ico"
+
+//
+// String Table resources
+//
+STRINGTABLE
+{
+    IDS_APPNAME                   "印刷ダイアログの新旧切替"
+}
+
+#if 0 // resource.rc に移動
+//
+// Dialog resources
+//
+
+// STYLE に WS_VISIBLE があると移動前に一瞬表示されてしまう
+IDD_MAIN DIALOG 0, 0, 369, 163
+//STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | WS_CAPTION | WS_POPUP | WS_SYSMENU
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SETFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
+// FONT があって DS_SETFONT が無くても大丈夫だが、FONT がないときに有るとだめ
+EXSTYLE WS_EX_ACCEPTFILES
+CAPTION "メインダイアログ(置換される)"
+//FONT 14, "ＭＳ ゴシック"
+//FONT 14, "ＭＳ Ｐゴシック"
+//FONT 9, "ＭＳ ゴシック" // ドットっぽいフォント
+//FONT 9, "ＭＳ Ｐゴシック" // ドットっぽいフォント(Windows 95以降)
+//FONT 9, "MS Shell Dlg" // 縦狭い ドットっぽいフォント = "MS UI Gothic"
+//FONT 9, "MS UI Gothic" // (Windows XP 以降)
+//FONT 9, "MS Shell Dlg 2" // それなりにかわいいフォント E の幅広め = Tahoma 漢字はかくかくしてる
+//FONT 9, "Tahoma" // それなりにかわいいフォント E の幅広め - 3番目にいいと思う
+//FONT 9, "System" // 指定なしと同じ E が縦長で上の方に寄ってる
+//FONT 9, "Meiryo" // 明瞭なフォント 上に寄る(Windows Vista 以降)
+FONT 9, "Meiryo UI" // 明瞭なフォント - 2番目にいいと思う(Windows 8 以降)
+//FONT 9, "Yu Gothic" // かわいいフォント 上による
+//FONT 9, "Yu Gothic UI" // かわいいフォント - 一番いいと思う(Windows 10 以降)
+{
+    LTEXT "Dialog-based Application スケルトン候補", 0, 10, 10, 500, 40
+    DEFPUSHBUTTON   "実行(&E)", IDOK, 264, 136, 45, 14, 0, WS_EX_LEFT
+    PUSHBUTTON      "中止(&C)", IDCANCEL, 316, 136, 45, 14, 0, WS_EX_LEFT
+}
+#endif
+
+// end of <res.rc>
