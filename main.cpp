@@ -12,6 +12,7 @@
 #include "pch.h"
 #pragma hdrstop
 
+#include <owl/registry.h>       // owl::TRegKey
 #include <owl/string.h>         // owl::TString
 
 #include <vector>               // std::vector
@@ -88,32 +89,25 @@ static owl::tstring LoadStr(UINT uID, HINSTANCE hInstance = 0)
 }
 
 //------------------------------------------------------------
-//
-// struct TMyClientDialogXfer - TMyClientDialog の転送バッファ
-//
 
-#pragma pack(push, 1)
-struct TMyClientDialogXfer {
-    // mark
-    //
-    TMyClientDialogXfer() { Load(); }
-    void Save();
-    void Load();
-};
-#pragma pack(pop)
-
-void TMyClientDialogXfer::Save()
-{
-    // mark
-}
-
-void TMyClientDialogXfer::Load()
+/// PreferLegacyPrintDialog の読み込み
+bool ReadTheRegKey()
 {
     try {
-        // mark
+        auto rootKey = HKEY_CURRENT_USER;
+        const TCHAR* key = _T("Software\\Microsoft\\Print\\UnifiedPrintDialog");
+        const TCHAR* value_name = _T("PreferLegacyPrintDialog");
+    
+        owl::TRegKey regKey(rootKey, key, KEY_READ, owl::TRegKey::NoCreate);
+        bool result = DWORD(owl::TRegValue(regKey, value_name)) != 0;
+        return result;
     }
     catch (const std::exception& x) {
-        MessageBox(0, owl::TString(x.what()), _T("TMyClientDialogXfer::Load"), MB_ICONSTOP | MB_OK);
+        TRACE(_T("ReadTheRegKey: Exception: ") << x.what());
+        return false;
+    }
+    catch (...) {
+        throw;
     }
 }
 
@@ -124,19 +118,12 @@ void TMyClientDialogXfer::Load()
 
 class TMyClientDialog : public owl::TDialog {
 
-    // *** static data ***
-public:
-    static TMyClientDialogXfer Data;
-
     // *** constructor ***
+public:
     TMyClientDialog();
-
-    // *** response ***
-    // mark
 
     // *** OWL override ***
     void SetupWindow() override;
-    bool CanClose() override;
     void CloseWindow(int retVal = 0) override;
     bool IdleAction(long idleCount) override;
 
@@ -147,9 +134,6 @@ private:
 
     DECLARE_RESPONSE_TABLE(TMyClientDialog);
 };
-
-//static
-TMyClientDialogXfer TMyClientDialog::Data;
 
 DEFINE_RESPONSE_TABLE1(TMyClientDialog, owl::TDialog)
 END_RESPONSE_TABLE;
@@ -165,15 +149,12 @@ void TMyClientDialog::SetupWindow()
 {
     owl::TDialog::SetupWindow();
     //
+    bool preferLegacyPrintDialog = ReadTheRegKey();
+    CheckDlgButton(IDC_LEGACY, preferLegacyPrintDialog);
+    CheckDlgButton(IDC_MODERN, !preferLegacyPrintDialog);
+    //
     FirstIdle = true;
 };
-
-bool TMyClientDialog::CanClose()
-{
-    ODS("TMyClientDialog::CanClose");
-    // mark
-    return owl::TDialog::CanClose();
-}
 
 void TMyClientDialog::CloseWindow(int retVal)
 {
@@ -182,8 +163,7 @@ void TMyClientDialog::CloseWindow(int retVal)
         try {
             if (!CanClose()) return;
             ODS("TMyClientDialog::CloseWindow|Save");
-            //TransferData(owl::tdGetData);
-            Data.Save();
+            // mark: Save
         }
         catch (const std::exception& x) {
             MessageBox(owl::TString(x.what()), _T("error"), MB_ICONSTOP | MB_OK);
