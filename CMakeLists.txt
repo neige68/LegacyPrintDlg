@@ -4,7 +4,8 @@
 # Copyright (C) 2025 neige68
 #
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.31)
+cmake_policy(SET CMP0167 OLD)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 # スタティックリンク
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
