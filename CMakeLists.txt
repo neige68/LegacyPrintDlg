@@ -50,8 +50,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /D__TRACE /D__WARN /D__DEBUG
 string(TIMESTAMP CURRENT_YEAR "%Y")
 add_compile_definitions(PROJECT_CURRENT_YEAR=${CURRENT_YEAR})
 
-add_compile_definitions(UNICODE;_UNICODE)
-add_link_options(/ENTRY:wWinMainCRTStartup)
+add_link_options(/ENTRY:WinMainCRTStartup)
 
 add_executable(${NAME} WIN32 main.cpp res.rc resource.rc pch.cpp)
 
