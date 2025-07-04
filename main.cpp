@@ -15,6 +15,8 @@
 #include <owl/registry.h>       // owl::TRegKey
 #include <owl/string.h>         // owl::TString
 
+#include <filesystem>           // std::filesystem::path
+#include <stdexcept>            // std::runtime_error
 #include <vector>               // std::vector
 
 #include "res.rh"               // Resource IDs
@@ -90,7 +92,7 @@ static owl::tstring LoadStr(UINT uID, HINSTANCE hInstance = 0)
 
 //------------------------------------------------------------
 
-/// PreferLegacyPrintDialog の読み込み
+/// PreferLegacyPrintDialog の値の読み込み
 bool ReadTheRegKey()
 {
     try {
@@ -109,6 +111,21 @@ bool ReadTheRegKey()
     catch (...) {
         throw;
     }
+}
+
+/// PreferLegacyPrintDialog の値の書き込み
+void WriteTheRegKey(bool legacy, HWND hwnd)
+{
+    if (ReadTheRegKey() == legacy)
+        return;                 // 不要
+    std::filesystem::path fname = "UnifiedPrintDialog_Modern.reg";
+    if (legacy)
+        fname = "UnifiedPrintDialog_Legacy.reg";
+    TRACE(_T("WriteTheRegKey: fname: " << fname));
+    auto hInst = ShellExecute(hwnd, _T("open"), fname.c_str(), nullptr, nullptr, SW_NORMAL);
+    auto result = reinterpret_cast<INT_PTR>(hInst);
+    if (result <= 32)
+        throw std::runtime_error(std::filesystem::path(GetErrorMessage(result)).string());
 }
 
 //------------------------------------------------------------
@@ -163,7 +180,7 @@ void TMyClientDialog::CloseWindow(int retVal)
         try {
             if (!CanClose()) return;
             ODS("TMyClientDialog::CloseWindow|Save");
-            // mark: Save
+            WriteTheRegKey(static_cast<bool>(IsDlgButtonChecked(IDC_LEGACY)), GetHandle());
         }
         catch (const std::exception& x) {
             MessageBox(owl::TString(x.what()), _T("error"), MB_ICONSTOP | MB_OK);
