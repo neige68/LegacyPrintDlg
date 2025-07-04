@@ -12,9 +12,12 @@
 #include "pch.h"
 #pragma hdrstop
 
+#include <boost/hash2/sha2.hpp> // boost::hash2::sha2_512
+
 #include <owl/registry.h>       // owl::TRegKey
 #include <owl/string.h>         // owl::TString
 
+#include <algorithm>            // std::equal
 #include <filesystem>           // std::filesystem::path
 #include <format>               // std::format
 #include <stdexcept>            // std::runtime_error
@@ -120,14 +123,56 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
 {
     if (ReadTheRegKey() == legacy)
         return;                 // 不要
-    std::filesystem::path fname = "UnifiedPrintDialog_Modern.reg";
-    if (legacy)
-        fname = "UnifiedPrintDialog_Legacy.reg";
-    TRACE(_T("WriteTheRegKey: fname: " << fname));
-    auto hInst = ShellExecute(hwnd, _T("open"), fname.string().c_str(), nullptr, nullptr, SW_NORMAL);
-    auto result = reinterpret_cast<INT_PTR>(hInst);
-    if (result <= 32)
-        throw std::runtime_error(GetErrorMessage(result));
+    //
+    // moden/lecagy それぞれのレジストリファイル名と SHA-512 ハッシュ値
+    //
+    // レジストリファイルの改変を困難にするためハッシュをチェックする。
+    //
+    // Windows コマンドプロンプトでは
+    //   certutil -hashfile <filename> SHA512
+    // で計算できる。
+    // 
+    const char* moden_fname = "UnifiedPrintDialog_Modern.reg";
+    const char* moden_hash = 
+        "\x88\xaa\x7d\x68\xd3\x84\xab\x2e\x0f\x46\x2c\x3b\x96\xa3\xfd\x34"
+        "\x8b\x2c\x55\x50\xb1\xe2\x07\x8a\xa8\x19\xb8\x3c\xfc\x4d\xe8\x5d"
+        "\xcd\x57\x22\xa0\x19\xe5\x17\x3e\x98\x56\xad\x20\x6b\x01\xf8\x56"
+        "\xcf\x8f\x0d\x63\x54\x22\x75\xb1\x23\xb0\x74\xba\x92\xc3\xe9\xd4";
+    const char* legacy_fname = "UnifiedPrintDialog_Legacy.reg";
+    const char* legacy_hash = 
+        "\x62\xfc\xd2\x0d\x3b\xf3\xa0\x3a\xdf\x6e\x6c\x24\x77\x90\x12\xd6"
+        "\xc9\x84\xa4\xc5\x9f\x3b\x39\x33\x6e\xa7\x1d\x22\xc5\x92\xd3\xe5"
+        "\xa5\x84\x0c\x2f\xf2\x53\xcf\xe2\x3a\xdf\xc1\xe1\x70\xbe\x87\x24"
+        "\x9c\xab\xcd\x7b\x28\x5c\xd0\x94\xb6\x45\x6b\x0f\xf3\x33\xa1\x25";
+    // 引き数 legacy の真偽によりどちらかを選択
+    std::filesystem::path fname = moden_fname;
+    const char* hash = moden_hash;
+    if (legacy) {
+        fname = legacy_fname;
+        hash = legacy_hash;
+    }
+    TRACE("WriteTheRegKey: fname: " << fname);
+    // ファイルの存在確認
+    if (!std::filesystem::exists(fname))
+        throw std::runtime_error("ファイルが見つかりません: " + fname.string());
+    // ハッシュ確認
+    {
+        boost::hash2::sha2_512 hasher;
+        std::ifstream ifs{fname, std::ios::binary};
+        if (!ifs)
+            throw std::runtime_error("ファイルがオープンできません: " + fname.string());
+        std::vector<char> buffer(512);
+        while (ifs.read(buffer.data(), buffer.size()) || ifs.gcount())
+            hasher.update(buffer.data(), ifs.gcount());
+        auto digest = hasher.result();
+        // 符号なしとして比較
+        if (!std::equal(digest.begin(), digest.end(), reinterpret_cast<const unsigned char*>(hash)))
+            throw std::runtime_error("ファイルが壊れています: " + fname.string());
+    }
+    // 実行
+    auto hInst = ShellExecute(hwnd, "open", fname.string().c_str(), nullptr, nullptr, SW_NORMAL);
+    if (auto ec = reinterpret_cast<INT_PTR>(hInst); ec <= 32) // エラー
+        throw std::runtime_error(GetErrorMessage(ec));
 }
 
 //------------------------------------------------------------
