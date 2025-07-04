@@ -16,6 +16,7 @@
 #include <owl/string.h>         // owl::TString
 
 #include <filesystem>           // std::filesystem::path
+#include <format>               // std::format
 #include <stdexcept>            // std::runtime_error
 #include <string>               // std::string
 #include <vector>               // std::vector
@@ -44,8 +45,8 @@ public:
     static TDebugMonitorStarter& Instance();
 private:
     TDebugMonitorStarter() {
-        PostMessage(HWND_BROADCAST, RegisterWindowMessage(_T("StartDebugMonitor")), GetCurrentProcessId(), 0);
-        OutputDebugString(_T("StartDebugMonitor\r\n"));
+        PostMessage(HWND_BROADCAST, RegisterWindowMessage("StartDebugMonitor"), GetCurrentProcessId(), 0);
+        OutputDebugString("StartDebugMonitor\r\n");
     }
 };
 
@@ -63,27 +64,27 @@ TDebugMonitorStarter& TDebugMonitorStarter::Instance()
 
 // システムのエラーメッセージを取得
 // inserts は無視(そのまま)
-static owl::tstring GetErrorMessage(DWORD id, DWORD dwLanguageId = 0)
+static std::string GetErrorMessage(DWORD id, DWORD dwLanguageId = 0)
 {
-    TCHAR* buf = 0;
+    char* buf = 0;
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS
                   | FORMAT_MESSAGE_MAX_WIDTH_MASK,
-                  0, id, dwLanguageId, (LPTSTR)&buf, 1, 0);
-    owl::tstring result(buf ? buf : _T(""));
+                  0, id, dwLanguageId, reinterpret_cast<LPTSTR>(&buf), 1, 0);
+    std::string result{buf ? buf : ""};
     LocalFree(buf);
     return result;
 }
 
-static owl::tstring LoadStr(UINT uID, HINSTANCE hInstance = 0)
+static std::string LoadStr(UINT uID, HINSTANCE hInstance = 0)
 {
-    std::vector<TCHAR> buf(64);
+    std::vector<char> buf(64);
     for (;;) {
         int r = LoadString(hInstance, uID, &buf.at(0), buf.size());
         if (r == 0) {
             if (DWORD e = GetLastError())
-                throw std::runtime_error{owl::TString{_T("LoadStr: ") + GetErrorMessage(e)}};
-            throw std::runtime_error("LoadStr: no string resource. (id=" + std::to_string(uID) + ", hInstance="
-                                     + std::to_string(reinterpret_cast<INT_PTR>(hInstance)) + ")");
+                throw std::runtime_error{"LoadStr: " + GetErrorMessage(e)};
+            throw std::runtime_error{std::format("LoadStr: no string resource. (id={}, hInstance={})",
+                                                 uID, reinterpret_cast<INT_PTR>(hInstance))};
         }
         if (r < buf.size() - 2) break;
         buf.resize(buf.size() * 2);
@@ -98,15 +99,15 @@ bool ReadTheRegKey()
 {
     try {
         auto rootKey = HKEY_CURRENT_USER;
-        const TCHAR* key = _T("Software\\Microsoft\\Print\\UnifiedPrintDialog");
-        const TCHAR* value_name = _T("PreferLegacyPrintDialog");
+        const char* key = "Software\\Microsoft\\Print\\UnifiedPrintDialog";
+        const char* value_name = "PreferLegacyPrintDialog";
 
         owl::TRegKey regKey(rootKey, key, KEY_READ, owl::TRegKey::NoCreate);
         bool result = DWORD(owl::TRegValue(regKey, value_name)) != 0;
         return result;
     }
     catch (const std::exception& x) {
-        TRACE(_T("ReadTheRegKey: Exception: ") << x.what());
+        TRACE("ReadTheRegKey: Exception: " << x.what());
         return false;
     }
     catch (...) {
@@ -123,10 +124,10 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
     if (legacy)
         fname = "UnifiedPrintDialog_Legacy.reg";
     TRACE(_T("WriteTheRegKey: fname: " << fname));
-    auto hInst = ShellExecute(hwnd, _T("open"), fname.c_str(), nullptr, nullptr, SW_NORMAL);
+    auto hInst = ShellExecute(hwnd, _T("open"), fname.string().c_str(), nullptr, nullptr, SW_NORMAL);
     auto result = reinterpret_cast<INT_PTR>(hInst);
     if (result <= 32)
-        throw std::runtime_error(std::filesystem::path(GetErrorMessage(result)).string());
+        throw std::runtime_error(GetErrorMessage(result));
 }
 
 //------------------------------------------------------------
@@ -164,7 +165,7 @@ void TMyClientDialog::CloseWindow(int retVal)
             WriteTheRegKey(static_cast<bool>(IsDlgButtonChecked(IDC_LEGACY)), GetHandle());
         }
         catch (const std::exception& x) {
-            MessageBox(owl::TString(x.what()), _T("error"), MB_ICONSTOP | MB_OK);
+            MessageBox(x.what(), "error", MB_ICONSTOP | MB_OK);
             return;
         }
         catch (...) {
@@ -213,7 +214,7 @@ public:
 
 int OwlMain(int argc, TCHAR** argv)
 {
-    owl::tstring title = _T("(title not loaded)");
+    std::string title = "(title not loaded)";
     int result = -1;
     try {
         title = LoadStr(IDS_APPNAME);
@@ -225,7 +226,7 @@ int OwlMain(int argc, TCHAR** argv)
         MessageBox(0, owl::TString(x.what()), title.c_str(), MB_ICONSTOP | MB_OK);
     }
     catch (...) {
-        MessageBox(0, _T("Unexpected exception."), title.c_str(), MB_ICONSTOP | MB_OK);
+        MessageBox(0, "Unexpected exception.", title.c_str(), MB_ICONSTOP | MB_OK);
     }
     return result;
 }
