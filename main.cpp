@@ -17,6 +17,7 @@
 
 #include <filesystem>           // std::filesystem::path
 #include <stdexcept>            // std::runtime_error
+#include <string>               // std::string
 #include <vector>               // std::vector
 
 #include "res.rh"               // Resource IDs
@@ -99,7 +100,7 @@ bool ReadTheRegKey()
         auto rootKey = HKEY_CURRENT_USER;
         const TCHAR* key = _T("Software\\Microsoft\\Print\\UnifiedPrintDialog");
         const TCHAR* value_name = _T("PreferLegacyPrintDialog");
-    
+
         owl::TRegKey regKey(rootKey, key, KEY_READ, owl::TRegKey::NoCreate);
         bool result = DWORD(owl::TRegValue(regKey, value_name)) != 0;
         return result;
@@ -137,30 +138,12 @@ class TMyClientDialog : public owl::TDialog {
 
     // *** constructor ***
 public:
-    TMyClientDialog();
+    TMyClientDialog() : owl::TDialog(nullptr, IDD_MAIN) {}
 
     // *** OWL override ***
     void SetupWindow() override;
     void CloseWindow(int retVal = 0) override;
-    bool IdleAction(long idleCount) override;
-
-    // *** data ***
-private:
-    // mark
-    bool FirstIdle;
-
-    DECLARE_RESPONSE_TABLE(TMyClientDialog);
 };
-
-DEFINE_RESPONSE_TABLE1(TMyClientDialog, owl::TDialog)
-END_RESPONSE_TABLE;
-
-TMyClientDialog::TMyClientDialog()
-    : owl::TDialog(/*parent*/0, /*resId*/IDD_MAIN)
-{
-    // mark
-    //SetTransferBuffer(&Data);
-}
 
 void TMyClientDialog::SetupWindow()
 {
@@ -169,8 +152,6 @@ void TMyClientDialog::SetupWindow()
     bool preferLegacyPrintDialog = ReadTheRegKey();
     CheckDlgButton(IDC_LEGACY, preferLegacyPrintDialog);
     CheckDlgButton(IDC_MODERN, !preferLegacyPrintDialog);
-    //
-    FirstIdle = true;
 };
 
 void TMyClientDialog::CloseWindow(int retVal)
@@ -192,40 +173,6 @@ void TMyClientDialog::CloseWindow(int retVal)
         }
     }
     Destroy(retVal);
-}
-
-bool TMyClientDialog::IdleAction(long idleCount)
-{
-    if (FirstIdle) {
-        FirstIdle = false;
-        // mark
-        ODS("TMyClientDialog::IdleAction-first");
-        //
-        // Window に設定されているフォントを ODS 出力してみる
-        //
-        HFONT hFont = GetWindowFont(); // システムフォントを使用している場合は 0
-        ODS("hFont=" << hFont);
-        if (hFont) {
-            owl::TFont font(hFont);
-            ODS(_T("font.FaceName=") << font.GetFaceName());
-            ODS(_T("font.Height=") << font.GetHeight());
-            ODS(_T("font.AveWidth=") << font.GetAveWidth());
-        }
-        else {
-            // システムフォントを出力してみる
-            NONCLIENTMETRICS m = { sizeof(NONCLIENTMETRICS), };
-            if (!SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof m, &m, 0))
-                ODS("SystemParametersInfoA failed.");
-            else {
-#define ODS_FONT(x) ODS(#x "=#<" << x.lfFaceName << "," << x.lfHeight << ">")
-                ODS_FONT(m.lfCaptionFont);
-                ODS_FONT(m.lfSmCaptionFont);
-                ODS_FONT(m.lfMenuFont);
-                ODS_FONT(m.lfMessageFont);
-            }
-        }
-    }
-    return TDialog::IdleAction(idleCount);
 }
 
 //------------------------------------------------------------
@@ -251,26 +198,13 @@ public:
 class TMyApp : public owl::TApplication {
 public:
     explicit TMyApp(LPCTSTR title) : owl::TApplication(title) {}
-    void InitMainWindow() override;
-
-    // アプリケーションはいつでも終われるようにする
-    //
-    // 本来はセーブしていないデータをセーブし、キャンセルも可能とすつ
-    // ためのものである。
-    //
-    // このアプリケーションでは、ダイアログクラスの CanClose はダイア
-    // ログのデータの有効性をチェックするので別物となる。
-    bool CanClose() override { return true; }
+    void InitMainWindow() override {
+        TMyFrameWindow* frame = new TMyFrameWindow(GetName(), new TMyClientDialog);
+        frame->SetIcon(this, IDI_APP);
+        frame->SetIconSm(this, IDI_APP);
+        SetMainWindow(frame);
+    }
 };
-
-
-void TMyApp::InitMainWindow()
-{
-    TMyFrameWindow* frame = new TMyFrameWindow(GetName(), new TMyClientDialog);
-    frame->SetIcon(this, IDI_APP);
-    frame->SetIconSm(this, IDI_APP);
-    SetMainWindow(frame);
-}
 
 //------------------------------------------------------------
 //

@@ -60,6 +60,8 @@ rem *** vcvars ***
 if not "%VCToolsVersion%"=="" echo INFO: build.bat: VCToolsVersion Ç™ê›íËÇ≥ÇÍÇƒÇ¢Ç‹Ç∑. Ç±ÇÃÇ‹Ç‹é¿çsÇµÇ‹Ç∑.
 if "%VCToolsVersion%"=="" call "%@VC%\vcvarsall.bat" x64
 
+echo INFO: The following lines are encoded in utf-8-dos.
+
 rem *** build directory ***
 if not exist %@bdir% mkdir %@bdir%
 pushd %@bdir%
@@ -74,21 +76,11 @@ msbuild ALL_BUILD.vcxproj /p:Configuration=Debug /m
 if errorlevel 1 goto err
 echo INFO: build.bat: msbuild Debug Done.
 
-rem *** debug test ***
-ctest -C debug -j %NUMBER_OF_PROCESSORS% --output-on-failure --timeout 5
-if errorlevel 1 goto err
-:skip_debug
-
 rem *** release ***
 if "%@build_rel%"=="" goto skip_release
 msbuild ALL_BUILD.vcxproj /p:Configuration=Release /m
 if errorlevel 1 goto err
 echo INFO: build.bat: msbuild Release Done.
-
-rem *** release test ***
-ctest -C release -j %NUMBER_OF_PROCESSORS% --output-on-failure --timeout 5
-if errorlevel 1 goto err
-:skip_release
 
 rem *** end build directory ***
 echo INFO: The following lines are encoded in cp932-dos.

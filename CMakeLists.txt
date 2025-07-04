@@ -52,18 +52,9 @@ add_compile_definitions(PROJECT_CURRENT_YEAR=${CURRENT_YEAR})
 add_compile_definitions(UNICODE;_UNICODE)
 add_link_options(/ENTRY:wWinMainCRTStartup)
 
-# ソース
-set(SOURCE
-    )
-
-add_executable(${NAME} WIN32 main.cpp ${SOURCE} res.rc resource.rc pch.cpp)
+add_executable(${NAME} WIN32 main.cpp res.rc resource.rc pch.cpp)
 
 # プリコンパイルヘッダを生成
 set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc\"pch.h\"")
-
-# ライブラリ
-set(LIBS
-    )
-target_link_libraries(${NAME} ${LIBS}) # add_executable より後じゃないとだめらしい
 
 # end of <CMakeLists.txt>
