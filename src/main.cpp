@@ -1,4 +1,4 @@
-&// <main.cpp>
+// <main.cpp>
 //
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68

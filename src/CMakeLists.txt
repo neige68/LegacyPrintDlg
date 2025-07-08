@@ -57,4 +57,18 @@ add_executable(${NAME} WIN32 main.cpp res.rc resource.rc pch.cpp)
 # プリコンパイルヘッダを生成
 set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc\"pch.h\"")
 
+# 出力ディレクトリにコピー
+add_custom_command(
+    TARGET ${NAME} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/../assets/UnifiedPrintDialog_Legacy.reg
+        ${CMAKE_BINARY_DIR}/$<CONFIG>/UnifiedPrintDialog_Legacy.reg
+)
+add_custom_command(
+    TARGET ${NAME} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/../assets/UnifiedPrintDialog_Modern.reg
+        ${CMAKE_BINARY_DIR}/$<CONFIG>/UnifiedPrintDialog_Modern.reg
+)
+
 # end of <CMakeLists.txt>
