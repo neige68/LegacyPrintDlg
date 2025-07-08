@@ -45,12 +45,13 @@ shift
 :optend
 if not "%1"=="" set @name=%1
 if "%@name%"=="" goto help
-set @exe=build\%@config%\%@name%.exe
-if not exist %@exe% set @exe=build\%@name%\%@config%\%@name%.exe
+set @exe=%@name%.exe
 if not "%@verbose%"=="" echo INFO: %@exe%
 shift
 shift
+pushd ..\build\%@config%
 %@exe% %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
+popd
 goto end
 :help
 echo usage: exec [v] [deb/rel] [--] name

@@ -17,7 +17,7 @@ set @VC=%VC143%
 set @CMAKEOPT=-G "Visual Studio 17 2022" -A x64
 
 set @exec_cmake=
-set @bdir=build
+set @bdir=..\build
 set @build_deb=t
 set @build_rel=t
 
@@ -68,7 +68,7 @@ pushd %@bdir%
 
 rem *** cmake ***
 if not exist ALL_BUILD.vcxproj set @exec_cmake=t
-if not "%@exec_cmake%"=="" cmake %@CMAKEOPT% ..
+if not "%@exec_cmake%"=="" cmake %@CMAKEOPT% ../src
 
 rem *** debug ***
 if "%@build_deb%"=="" goto skip_debug
