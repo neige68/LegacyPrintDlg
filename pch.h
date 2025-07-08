@@ -3,7 +3,8 @@
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
 //
-// Note: Precompile header
+/// \file
+/// \brief Precompile header
 //
 // Compiler: VC14.3
 // Library:  OWL7

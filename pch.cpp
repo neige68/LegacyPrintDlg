@@ -3,7 +3,8 @@
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
 //
-// Note: Precompile
+/// \file
+/// \brief Precompile 
 //
 // Compiler: VC14.3
 //
