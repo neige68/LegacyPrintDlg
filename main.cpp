@@ -28,22 +28,13 @@
 
 //------------------------------------------------------------
 //
-// ODS - OutputDebugString
+/// デバッグモニタを始動
 //
-
-#ifdef NDEBUG
-# define ODS(s) ((void)0)
-#else
-# define ODS(s)                                         \
-    do {                                                \
-        TDebugMonitorStarter::Instance();               \
-        owl::tostringstream ODS_oss;                    \
-        ODS_oss << s << std::endl;                      \
-        ::OutputDebugString(ODS_oss.str().c_str());     \
-    } while (0)
-#endif
-
-class TDebugMonitorStarter {    // デバッグモニタを始動
+/// 特定の Window Message を受信することで OutputDebugString で出力さ
+/// れた文字列を取得するツールを始動するためのシングルトンクラスです。
+/// そのツールの名前は忘れましたが、現在は自作のツールで使用してます。
+//
+class TDebugMonitorStarter {
 public:
     static TDebugMonitorStarter& Instance();
 private:
@@ -202,11 +193,11 @@ void TMyClientDialog::SetupWindow()
 
 void TMyClientDialog::CloseWindow(int retVal)
 {
-    ODS("TMyClientDialog::CloseWindow|retVal=" << retVal);
+    TRACE("TMyClientDialog::CloseWindow|retVal=" << retVal);
     if (retVal == IDOK) {
         try {
             if (!CanClose()) return;
-            ODS("TMyClientDialog::CloseWindow|Save");
+            TRACE("TMyClientDialog::CloseWindow|Save");
             WriteTheRegKey(static_cast<bool>(IsDlgButtonChecked(IDC_LEGACY)), GetHandle());
         }
         catch (const std::exception& x) {
@@ -262,10 +253,13 @@ int OwlMain(int argc, TCHAR** argv)
     std::string title = "(title not loaded)";
     int result = -1;
     try {
+#if !defined(NDEBUG)                      // デバッグモード
+        TDebugMonitorStarter::Instance(); // デバッグモニタを始動
+#endif    
         title = LoadStr(IDS_APPNAME);
         TMyApp app(title.c_str());
         result = app.Run();
-        ODS("OwlMain|result=" << result);
+        TRACE("OwlMain|result=" << result);
     }
     catch (const std::exception& x) {
         MessageBox(0, owl::TString(x.what()), title.c_str(), MB_ICONSTOP | MB_OK);
