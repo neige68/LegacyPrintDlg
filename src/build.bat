@@ -3,8 +3,8 @@
 rem
 rem Project LegacyPrintDlg
 rem Copyright (C) 2025 neige68
-rem
-rem Note: build
+rem https://github.com/neige68/LegacyPrintDlg
+rem This program is released under license GPLv3
 rem
 rem Windows: 10 and later
 rem
