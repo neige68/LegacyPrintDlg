@@ -2,6 +2,8 @@
 //
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
+// https://github.com/neige68/LegacyPrintDlg
+// This program is released under license GPLv3
 //
 /// \file
 /// \brief メインモジュール
@@ -136,15 +138,15 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
     // Windows コマンドプロンプトでは
     //   certutil -hashfile <filename> SHA512
     // で計算できる。
-    // 
+    //
     const char* moden_fname = "UnifiedPrintDialog_Modern.reg";
-    const char* moden_hash = 
+    const char* moden_hash =
         "\x88\xaa\x7d\x68\xd3\x84\xab\x2e\x0f\x46\x2c\x3b\x96\xa3\xfd\x34"
         "\x8b\x2c\x55\x50\xb1\xe2\x07\x8a\xa8\x19\xb8\x3c\xfc\x4d\xe8\x5d"
         "\xcd\x57\x22\xa0\x19\xe5\x17\x3e\x98\x56\xad\x20\x6b\x01\xf8\x56"
         "\xcf\x8f\x0d\x63\x54\x22\x75\xb1\x23\xb0\x74\xba\x92\xc3\xe9\xd4";
     const char* legacy_fname = "UnifiedPrintDialog_Legacy.reg";
-    const char* legacy_hash = 
+    const char* legacy_hash =
         "\x62\xfc\xd2\x0d\x3b\xf3\xa0\x3a\xdf\x6e\x6c\x24\x77\x90\x12\xd6"
         "\xc9\x84\xa4\xc5\x9f\x3b\x39\x33\x6e\xa7\x1d\x22\xc5\x92\xd3\xe5"
         "\xa5\x84\x0c\x2f\xf2\x53\xcf\xe2\x3a\xdf\xc1\xe1\x70\xbe\x87\x24"
@@ -280,7 +282,7 @@ int OwlMain(int argc, TCHAR** argv)
     try {
 #if !defined(NDEBUG)                      // デバッグモード
         TDebugMonitorStarter::Instance(); // デバッグモニタを始動
-#endif    
+#endif
         title = LoadStr(IDS_APPNAME);
         TMyApp app(title.c_str());
         result = app.Run();
