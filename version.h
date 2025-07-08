@@ -3,7 +3,8 @@
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
 //
-// Note: version
+/// \file
+/// \brief バージョン定義
 //
 // Compiler: VC14.3
 //

@@ -1,9 +1,10 @@
-// <main.cpp>
+&// <main.cpp>
 //
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
 //
-// Note: main
+/// \file
+/// \brief メインモジュール
 //
 // Compiler: VC14.3
 // Library:  OWL7
@@ -32,8 +33,10 @@
 //
 /// 特定の Window Message を受信することで OutputDebugString で出力さ
 /// れた文字列を取得するツールを始動するためのシングルトンクラスです。
-/// そのツールの名前は忘れましたが、現在は自作のツールで使用してます。
+/// そのようなツールが存在しましたが名前は忘れました。
+/// 現在は自作のツールを使用してます。
 //
+
 class TDebugMonitorStarter {
 public:
     static TDebugMonitorStarter& Instance();
@@ -53,12 +56,12 @@ TDebugMonitorStarter& TDebugMonitorStarter::Instance()
 
 //------------------------------------------------------------
 //
-// local
+/// システムのエラーメッセージを取得
+//
+/// inserts は無視(そのまま)
 //
 
-// システムのエラーメッセージを取得
-// inserts は無視(そのまま)
-static std::string GetErrorMessage(DWORD id, DWORD dwLanguageId = 0)
+std::string GetErrorMessage(DWORD id, DWORD dwLanguageId = 0)
 {
     char* buf = 0;
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS
@@ -69,7 +72,12 @@ static std::string GetErrorMessage(DWORD id, DWORD dwLanguageId = 0)
     return result;
 }
 
-static std::string LoadStr(UINT uID, HINSTANCE hInstance = 0)
+//------------------------------------------------------------
+//
+/// リソースの文字列を取得
+//
+
+std::string LoadStr(UINT uID, HINSTANCE hInstance = 0)
 {
     std::vector<char> buf(64);
     for (;;) {
@@ -87,8 +95,10 @@ static std::string LoadStr(UINT uID, HINSTANCE hInstance = 0)
 }
 
 //------------------------------------------------------------
+//
+/// レジストリ PreferLegacyPrintDialog の値の読み込み
+//
 
-/// PreferLegacyPrintDialog の値の読み込み
 bool ReadTheRegKey()
 {
     try {
@@ -109,7 +119,11 @@ bool ReadTheRegKey()
     }
 }
 
-/// PreferLegacyPrintDialog の値の書き込み
+//------------------------------------------------------------
+//
+/// レジストリ PreferLegacyPrintDialog の値の書き込み
+//
+
 void WriteTheRegKey(bool legacy, HWND hwnd)
 {
     if (ReadTheRegKey() == legacy)
@@ -168,7 +182,9 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
 
 //------------------------------------------------------------
 //
-// class TMyClientDialog - アプリケーションフレームのクライアントダイアログ
+/// \class TMyClientDialog
+//
+/// アプリケーションフレームのクライアントダイアログ
 //
 
 class TMyClientDialog : public owl::TDialog {
@@ -186,6 +202,8 @@ void TMyClientDialog::SetupWindow()
 {
     owl::TDialog::SetupWindow();
     //
+    // レジストリから値を読み込み、それによってラジオボタンのチェック状態を設定
+    //
     bool preferLegacyPrintDialog = ReadTheRegKey();
     CheckDlgButton(IDC_LEGACY, preferLegacyPrintDialog);
     CheckDlgButton(IDC_MODERN, !preferLegacyPrintDialog);
@@ -198,6 +216,9 @@ void TMyClientDialog::CloseWindow(int retVal)
         try {
             if (!CanClose()) return;
             TRACE("TMyClientDialog::CloseWindow|Save");
+            //
+            // ラジオボタンのチェック状態により、レジストリに書き込み
+            //
             WriteTheRegKey(static_cast<bool>(IsDlgButtonChecked(IDC_LEGACY)), GetHandle());
         }
         catch (const std::exception& x) {
@@ -214,7 +235,9 @@ void TMyClientDialog::CloseWindow(int retVal)
 
 //------------------------------------------------------------
 //
-// class TMyFrameWindow - アプリケーションのフレームウインドウ
+/// \class TMyFrameWindow
+//
+/// アプリケーションのフレームウインドウ
 //
 
 class TMyFrameWindow : public owl::TFrameWindow {
@@ -229,7 +252,9 @@ public:
 
 //------------------------------------------------------------
 //
-// class TMyApp - アプリケーションクラス
+/// \class TMyApp
+//
+/// アプリケーションクラス
 //
 
 class TMyApp : public owl::TApplication {
@@ -245,7 +270,7 @@ public:
 
 //------------------------------------------------------------
 //
-// OwlMain
+/// OWL アプリ―ションのエントリポイント
 //
 
 int OwlMain(int argc, TCHAR** argv)
