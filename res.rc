@@ -68,7 +68,7 @@
 //
 // Icon resources
 //
-IDI_APP            ICON           "neige.ico"
+IDI_APP            ICON           "LegacyPrintDlg.ico"
 
 //
 // String Table resources
