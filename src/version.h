@@ -46,9 +46,9 @@
 #undef VER_PRODUCTVERSION_STR
 #undef VER_PRODUCTVERSION
 /// 製品バージョン
-#define VER_PRODUCTVERSION              0, 0, VER_RELEASE, VER_BUILD
+#define VER_PRODUCTVERSION              1, 0, VER_RELEASE, VER_BUILD
 /// 製品バージョン
-#define VER_PRODUCTVERSION_STR          "0.00"
+#define VER_PRODUCTVERSION_STR          "1.00"
 
 //
 /// 製品名
@@ -58,14 +58,14 @@
 //
 /// ファイルバージョン
 //
-#define VER_FILEVERSION                 0, 0, VER_RELEASE, VER_BUILD
+#define VER_FILEVERSION                 1, 0, VER_RELEASE, VER_BUILD
 /// ファイルバージョン文字列
-#define VER_FILEVERSION_STR             "0.00." VER_RELEASE_STR VER_BUILD_STR
+#define VER_FILEVERSION_STR             "1.00." VER_RELEASE_STR VER_BUILD_STR
 
 //
 /// ファイル説明
 //
-#define VER_FILEDESCRIPTION             "印刷ダイアログスタイル切り替え"
+#define VER_FILEDESCRIPTION             "印刷ダイアログの新旧切替"
 
 //
 /// \def VER_LEGALCOPYRIGHT_YEAR
