@@ -50,9 +50,9 @@
             VALUE "CompanyName", VER_COMPANYNAME // "\000"
             VALUE "FileDescription", VER_FILEDESCRIPTION // "\000"
             VALUE "FileVersion", VER_FILEVERSION_STR // "\000"
-            VALUE "InternalName", "DLGAPP" // "\000"
+            VALUE "InternalName", "LegacyPrintDlg" // "\000"
             VALUE "LegalCopyright", VER_LEGALCOPYRIGHT // "\000"
-            VALUE "OriginalFilename", "DLGAPP.EXE" // "\000"
+            VALUE "OriginalFilename", "LegacyPrintDlg.EXE" // "\000"
             VALUE "ProductName", VER_PRODUCTNAME // "\000"
             VALUE "ProductVersion", VER_PRODUCTVERSION_STR // "\000"
 #ifdef NDEBUG
@@ -77,7 +77,7 @@ IDI_APP            ICON           "LegacyPrintDlg.ico"
 //
 STRINGTABLE
 {
-    IDS_APPNAME                   "印刷ダイアログの新旧切替"
+    IDS_APPNAME                   VER_PRODUCTNAME " - " VER_FILEDESCRIPTION
 }
 
 #if 0 // resource.rc に移動
