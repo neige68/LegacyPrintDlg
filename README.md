@@ -1,5 +1,7 @@
 # LegacyPrintDlg - Windows 11 22H2 以降の Win32 アプリからの印刷ダイアログの新旧切替
 
+[バイナリリリース](https://github.com/neige68/LegacyPrintDlg/releases)(Windows インストーラ) もあります。
+
 Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷ダイアログが導入されたことで、
 印刷設定が正しく反映されないなどの問題が発生することがあります。
 
