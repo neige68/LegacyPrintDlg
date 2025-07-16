@@ -57,7 +57,7 @@ FONT 9, "Yu Gothic UI", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "&OK",IDOK,7,78,45,14
     PUSHBUTTON      "中止(&C)",IDCANCEL,174,78,45,14
-    GROUPBOX        "スタイル(&S)",IDC_STATIC,7,7,215,55
+    GROUPBOX        "印刷ダイアログの種類(&S)",IDC_STATIC,7,7,215,55
     CONTROL         "レガシー(旧型)(&L)",IDC_LEGACY,"Button",BS_AUTORADIOBUTTON,18,20,63,10
     CONTROL         "モダン(新型)(&M)",IDC_MODERN,"Button",BS_AUTORADIOBUTTON,18,39,57,10
 END
