@@ -17,6 +17,7 @@
 
 #include <boost/hash2/sha2.hpp> // boost::hash2::sha2_512
 
+#include <owl/commctrl.h>       // owl::TNotify
 #include <owl/registry.h>       // owl::TRegKey
 #include <owl/string.h>         // owl::TString
 
@@ -184,6 +185,43 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
 
 //------------------------------------------------------------
 //
+/// \class TAboutDialog
+//
+/// アプリについてのダイアログ
+//
+
+class TAboutDialog : public owl::TDialog {
+public:
+    TAboutDialog(TWindow* parent) : owl::TDialog(parent, IDD_ABOUT) {}
+
+    // *** OWL override ***
+    void SetupWindow() override {
+        owl::TDialog::SetupWindow();
+        //
+        LPCTSTR text =
+            _T("Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷ダイアログが導入されたことで、"
+               "印刷設定が正しく反映されないなどの問題が発生することがあります。\r\n\r\n"
+               "当アプリ LegacyPrintDlg は、印刷時のダイアログを旧型に切り替えることで、アプ"
+               "リ側が指定した印刷設定が確実に反映されるようにするためのツールです。\r\n\r\n"
+               "レジストリ操作でも行えますが、それを GUI 操作で行えるようにしたアプリです。");
+        //
+        SetDlgItemText(IDC_DESCRIPTION, text);
+    }
+    owl::TResult EvNotify(owl::uint id, owl::TNotify & notifyInfo) override {
+        if (id == IDC_GITHUB && notifyInfo.code == NM_CLICK) {
+            CmGithub();
+            return 0;
+        }
+        return owl::TDialog::EvNotify(id, notifyInfo);
+    }
+    void CmGithub() {
+        std::string uri = "https://github.com/neige68/LegacyPrintDlg/";
+        ShellExecuteA(nullptr, "open", uri.c_str(), nullptr, nullptr, SW_SHOW);
+    }
+};
+
+//------------------------------------------------------------
+//
 /// \class TMyClientDialog
 //
 /// アプリケーションフレームのクライアントダイアログ
@@ -198,6 +236,19 @@ public:
     // *** OWL override ***
     void SetupWindow() override;
     void CloseWindow(int retVal = 0) override;
+    owl::TResult EvNotify(owl::uint id, owl::TNotify & notifyInfo) override {
+        if (id == IDC_ABOUT && notifyInfo.code == NM_CLICK) {
+            CmAbout();
+            return 0;
+        }
+        return owl::TDialog::EvNotify(id, notifyInfo);
+    }
+
+    // *** response ***
+    void CmAbout() {
+        TAboutDialog dialog(this);
+        dialog.Execute();
+    }
 };
 
 void TMyClientDialog::SetupWindow()
@@ -262,6 +313,12 @@ public:
 class TMyApp : public owl::TApplication {
 public:
     explicit TMyApp(LPCTSTR title) : owl::TApplication(title) {}
+    void InitInstance() override {
+        INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS };
+        InitCommonControlsEx(&icc);
+        //
+        TApplication::InitInstance();
+    }
     void InitMainWindow() override {
         TMyFrameWindow* frame = new TMyFrameWindow(GetName(), new TMyClientDialog);
         frame->SetIcon(this, IDI_APP);

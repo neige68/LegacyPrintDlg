@@ -56,10 +56,25 @@ CAPTION "LegacyPrintDlg - 印刷ダイアログの新旧切替"
 FONT 9, "Yu Gothic UI", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "&OK",IDOK,7,78,45,14
-    PUSHBUTTON      "中止(&C)",IDCANCEL,174,78,45,14
+    PUSHBUTTON      "中止(&C)",IDCANCEL,60,78,45,14
     GROUPBOX        "印刷ダイアログの種類(&S)",IDC_STATIC,7,7,215,55
     CONTROL         "レガシー(旧型)(&L)",IDC_LEGACY,"Button",BS_AUTORADIOBUTTON,18,23,63,10
     CONTROL         "モダン(新型)(&M)",IDC_MODERN,"Button",BS_AUTORADIOBUTTON,18,39,57,10
+    CONTROL         "<A>アプリについて</A>",IDC_ABOUT,"SysLink",WS_GROUP | WS_TABSTOP,173,80,48,12
+END
+
+IDD_ABOUT DIALOGEX 0, 0, 310, 176
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "アプリについて"
+FONT 8, "Yu Gothic UI", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,132,153,50,14
+    LTEXT           "LegacyPrintDlg - 印刷ダイアログの新旧切替",IDC_STATIC,82,8,144,8,SS_CENTERIMAGE
+    LTEXT           "Copyright (C) 2025 neige68",IDC_STATIC,103,24,102,8,SS_CENTERIMAGE
+    CONTROL         "<A>https://github.com/neige68/LegacyPrintDlg/</A>",IDC_GITHUB,
+                    "SysLink",WS_TABSTOP,80,40,156,8
+    LTEXT           "This program is released under license GPLv3 ライセンスは GPLv3 に準じます",IDC_STATIC,36,56,258,8
+    EDITTEXT        IDC_DESCRIPTION,7,72,296,73,ES_MULTILINE | ES_READONLY | WS_VSCROLL
 END
 
 
@@ -78,6 +93,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 92
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -93,6 +116,11 @@ BEGIN
 END
 
 IDD_LOCALTESTUSERINTERFACE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUT AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

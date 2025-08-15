@@ -10,6 +10,11 @@ add_executable(${NAME} WIN32 main.cpp res.rc resource.rc pch.cpp)
 
 target_link_options(${NAME} PRIVATE /ENTRY:WinMainCRTStartup)
 
+# マニフェスト生成をしない
+set_target_properties(${NAME} PROPERTIES
+  VS_GLOBAL_ManifestToolEnableExecutionLevel "false"
+  )
+
 # プリコンパイルヘッダを生成
 set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc\"pch.h\"")
 
