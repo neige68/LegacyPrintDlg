@@ -1,8 +1,5 @@
 # .gitignore
 /build/
-/build1/
-/buildu/
-/build1u/
 /docs/html/
 *~
 *.bak
