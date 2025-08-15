@@ -77,8 +77,11 @@ Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷画面が導入
 
 【サポート】
 
-- GitHub Issues にて対応  
+- GitHub Issues
   https://github.com/neige68/LegacyPrintDlg/issues
+
+- メールは「legacyprintdlg」あっと「neige」どっと「nu」まで。
+  頂いたメールは、メールアドレス等を除き公開することがあります。ご了承ください。
 
 
 【参考リンク】
