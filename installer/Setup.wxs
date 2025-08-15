@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Project LegacyPrintDlg
+    Copyright (C) 2025 neige68
+    https://github.com/neige68/LegacyPrintDlg
+    This program is released under license GPLv3
+-->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define ProductName="LegacyPrintDlg" ?>
   <?define ProductNameWithVersion="$(var.ProductName)" ?>
@@ -12,12 +18,12 @@
 
     <Package Id="*" Keywords="インストーラ"
              Description="$(var.ProductNameWithVersion) インストーラ"
-             Comments="$(var.ProductName) は $(var.Manufacturer) の商標です。"
+             Comments="$(var.ProductNameWithVersion) インストーラ"
              Manufacturer="$(var.Manufacturer)" InstallerVersion="100"
              Languages="1041" Compressed="yes" SummaryCodepage="932" />
 
     <WixVariable Id="WixUILicenseRtf" Value="license.rtf"/> 
-    <Media Id="1" Cabinet="Setup.cab" EmbedCab="yes" DiskPrompt="CD-ROM 1枚目" />
+    <Media Id="1" Cabinet="Setup.cab" EmbedCab="yes" DiskPrompt="ディスク 1枚目" />
     <Property Id="DiskPrompt" Value="$(var.Manufacturer)'s $(var.ProductNameWithVersion) インストーラ [1]" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
