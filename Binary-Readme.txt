@@ -36,7 +36,7 @@ Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷画面が導入
 - UnifiedPrintDialog_Legacy.reg     レガシー(旧型)ダイアログを使用するレジストリ設定
 - UnifiedPrintDialog_Modern.reg     モダン(新型)ダイアログを使用するレジストリ設定
 - Readme.txt                        本ドキュメント
-- License.rtf                       ライセンス
+- License.rtf                       ライセンス文書(インストーラ表示用)
 
 * レジストリ設定ファイル(.reg)はプログラムでハッシュをチェックしてます
   ので、改変できません。
