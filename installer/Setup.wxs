@@ -32,7 +32,7 @@
           <Directory Id="APPLICATIONFOLDER" Name="$(var.ProductFolderName)">
 
             <Component Id="MainExecutable"
-                       Guid="A9BBFA58-C4E2-47B9-8369-76AD067C2CCA">
+                       Guid="*">
               <File Id="LegacyPrintDlgExe"
                     Name="LegacyPrintDlg.exe" DiskId="1"
                     Source="..\build\src\release\LegacyPrintDlg.exe" KeyPath="yes">
@@ -50,7 +50,7 @@
             </Component>
 
             <Component Id="Readme"
-                       Guid="3877E3D2-1643-4C6F-811C-31AFE7A638EB">
+                       Guid="*">
               <File Id="Readme" Name="Readme.txt" DiskId="1"
                     Source="..\Binary-Readme.txt" KeyPath="yes">
                 <Shortcut Id="startmenuReadme" Directory="ProgramMenuDir"
@@ -59,7 +59,7 @@
             </Component>
 
             <Component Id="License"
-                       Guid="999BCA81-01C8-4A65-B9F4-874199431854">
+                       Guid="*">
               <File Id="License" Name="License.rtf" DiskId="1"
                     Source="License.rtf" KeyPath="yes">
                 <Shortcut Id="startmenuLicense" Directory="ProgramMenuDir"
@@ -74,7 +74,7 @@
       <Directory Id="ProgramMenuFolder" Name="Programs">
         <Directory Id="ProgramMenuDir" Name="$(var.ProductNameWithVersion)">
           <Component Id="ProgramMenuDir"
-                     Guid="B2F811C9-47BC-4097-B952-9B4C4DA17AB0">
+                     Guid="*">
             <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
             <RegistryValue Root="HKCU"
                            Key="Software\[Manufacturer]\[ProductName]"
