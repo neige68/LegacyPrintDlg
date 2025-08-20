@@ -14,7 +14,7 @@
            Id="*"
            UpgradeCode="1F63B925-A40E-4AA5-B812-9156C6C3423C"
            Language="1041" Codepage="932"
-           Version="1.0.0" Manufacturer="$(var.Manufacturer)">
+           Version="1.1.0" Manufacturer="$(var.Manufacturer)">
 
     <Package Id="*" Keywords="インストーラ"
              Description="$(var.ProductNameWithVersion) インストーラ"

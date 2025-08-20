@@ -22,8 +22,8 @@
 
 #undef VER_PRODUCTVERSION_STR
 #undef VER_PRODUCTVERSION
-#define VER_PRODUCTVERSION              1, 0, 0, 0
-#define VER_PRODUCTVERSION_STR          "1.0.0"
+#define VER_PRODUCTVERSION              1, 1, 0, 0
+#define VER_PRODUCTVERSION_STR          "1.1.0"
 
 #define VER_PRODUCTNAME                 "LegacyPrintDlg"
 
