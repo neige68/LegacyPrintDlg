@@ -18,60 +18,20 @@
 
 //------------------------------------------------------------
 
-//
-/// リリース番号
-//
-#define VER_RELEASE                     0
-/// リリース番号文字列
-#define VER_RELEASE_STR                 "000"
-
-//
-/// ビルド番号
-//
-#define VER_BUILD                       0
-//
-/// ビルド番号文字列
-//
-/// "" もしくは ".9"
-#define VER_BUILD_STR                   ""
-
-//
-/// 製作会社名
-//
 #define VER_COMPANYNAME                 "neige68"
 
-//
-// 製品バージョン
-//
 #undef VER_PRODUCTVERSION_STR
 #undef VER_PRODUCTVERSION
-/// 製品バージョン
-#define VER_PRODUCTVERSION              1, 0, VER_RELEASE, VER_BUILD
-/// 製品バージョン
-#define VER_PRODUCTVERSION_STR          "1.00"
+#define VER_PRODUCTVERSION              1, 0, 0, 0
+#define VER_PRODUCTVERSION_STR          "1.0.0"
 
-//
-/// 製品名
-//
 #define VER_PRODUCTNAME                 "LegacyPrintDlg"
 
-//
-/// ファイルバージョン
-//
-#define VER_FILEVERSION                 1, 0, VER_RELEASE, VER_BUILD
-/// ファイルバージョン文字列
-#define VER_FILEVERSION_STR             "1.00." VER_RELEASE_STR VER_BUILD_STR
+#define VER_FILEVERSION                 VER_PRODUCTVERSION
+#define VER_FILEVERSION_STR             VER_PRODUCTVERSION_STR
 
-//
-/// ファイル説明
-//
 #define VER_FILEDESCRIPTION             "印刷ダイアログの新旧切替"
 
-//
-/// \def VER_LEGALCOPYRIGHT_YEAR
-/// \brief 著作権発効年
-/// \details 例: 2023 or 2023-2024
-//
 #define VER_LEGALCOPYRIGHT_STARTYEAR    2025
 #if !defined(PROJECT_CURRENT_YEAR) || (PROJECT_CURRENT_YEAR == VER_LEGALCOPYRIGHT_STARTYEAR)
 # define VER_LEGALCOPYRIGHT_YEAR        BOOST_PP_STRINGIZE(VER_LEGALCOPYRIGHT_STARTYEAR)
@@ -80,9 +40,6 @@
                                         BOOST_PP_STRINGIZE(PROJECT_CURRENT_YEAR)
 #endif
 
-//
-/// 著作権表示
-//
 #define VER_LEGALCOPYRIGHT              "Copyright (C) " VER_LEGALCOPYRIGHT_YEAR " " VER_COMPANYNAME
 
 //------------------------------------------------------------
