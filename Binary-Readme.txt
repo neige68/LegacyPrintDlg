@@ -44,7 +44,7 @@ Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷画面が導入
 
 【インストール手順】
 
-- LegacyPrintDlg.msi を実行してインストール
+- LegacyPrintDlg.msi を実行し、画面に従ってインストールします。
 
 
 【使い方】
@@ -83,7 +83,7 @@ Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷画面が導入
 - GitHub Issues
   https://github.com/neige68/LegacyPrintDlg/issues
 
-- メールは「legacyprintdlg」あっと「neige」どっと「nu」まで。
+- メールは「legacyprintdlg」アット「neige」ドット「nu」まで。
   頂いたメールは、メールアドレス等を除き公開することがあります。ご了承ください。
 
 
