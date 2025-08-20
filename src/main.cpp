@@ -15,6 +15,8 @@
 #include "pch.h"
 #pragma hdrstop
 
+#include "version.h"            // VER_PRODUCTVERSION_STR
+
 #include <boost/hash2/sha2.hpp> // boost::hash2::sha2_512
 
 #include <owl/commctrl.h>       // owl::TNotify
@@ -198,14 +200,16 @@ public:
     void SetupWindow() override {
         owl::TDialog::SetupWindow();
         //
-        LPCTSTR text =
+        auto appName = GetDlgItemText(IDC_APPNAME) + _T(" Ver. " VER_PRODUCTVERSION_STR);
+        SetDlgItemText(IDC_APPNAME, appName);
+        //
+        LPCTSTR description =
             _T("Windows 11 (22H2 以降) では、Win32 アプリに対して新しい印刷ダイアログが導入されたことで、"
                "印刷設定が正しく反映されないなどの問題が発生することがあります。\r\n\r\n"
                "当アプリ LegacyPrintDlg は、印刷時のダイアログを旧型に切り替えることで、"
                "アプリ側が指定した印刷設定が確実に反映されるようにするためのツールです。\r\n\r\n"
                "レジストリ操作でも行えますが、それを GUI 操作で簡単に行えるようにしました。");
-        //
-        SetDlgItemText(IDC_DESCRIPTION, text);
+        SetDlgItemText(IDC_DESCRIPTION, description);
     }
     owl::TResult EvNotify(owl::uint id, owl::TNotify & notifyInfo) override {
         if (id == IDC_GITHUB && notifyInfo.code == NM_CLICK) {

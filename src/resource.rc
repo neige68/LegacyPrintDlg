@@ -69,7 +69,7 @@ CAPTION "アプリについて"
 FONT 8, "Yu Gothic UI", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,132,153,50,14
-    LTEXT           "LegacyPrintDlg - 印刷ダイアログの新旧切替",IDC_STATIC,82,8,144,8,SS_CENTERIMAGE
+    LTEXT           "LegacyPrintDlg - 印刷ダイアログの新旧切替",IDC_APPNAME,70,8,168,8,SS_CENTERIMAGE
     LTEXT           "Copyright (C) 2025 neige68",IDC_STATIC,103,24,102,8,SS_CENTERIMAGE
     CONTROL         "<A>https://github.com/neige68/LegacyPrintDlg/</A>",IDC_GITHUB,
                     "SysLink",WS_TABSTOP,80,40,156,8
