@@ -194,7 +194,7 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
 
 class TAboutDialog : public owl::TDialog {
 public:
-    TAboutDialog(TWindow* parent) : owl::TDialog(parent, IDD_ABOUT) {}
+    explicit TAboutDialog(TWindow* parent) : owl::TDialog(parent, IDD_ABOUT) {}
 
     // *** OWL override ***
     void SetupWindow() override {
