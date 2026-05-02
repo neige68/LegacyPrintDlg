@@ -1,4 +1,4 @@
-// <res.rc> -*- coding: cp932-dos -*-
+ï»¿// <res.rc> -*- coding: utf-8-with-signature -*-
 //
 // Project LegacyPrintDlg
 // Copyright (C) 2025 neige68
@@ -8,22 +8,16 @@
 // Note: Resource Script
 //
 // Compiler: VC14.3
-// Library:  OWL7
 //
 
-// ‚±‚Ìƒtƒ@ƒCƒ‹‚ğ ResEdit, Visual Studio IDE ‚Å•ÒW‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
-// Visual Studio IDE ‚Å•ÒW‚·‚é‚Ì‚Í resource.rc, resource.h ‚Æ‚·‚éB
+// ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ ResEdit, Visual Studio IDE ã§ç·¨é›†ã—ã¦ã¯ã„ã‘ãªã„ã€‚
+// Visual Studio IDE ã§ç·¨é›†ã™ã‚‹ã®ã¯ resource.rc, resource.h ã¨ã™ã‚‹ã€‚
 
-#include <owl/version.h>
-#include <owl/except.rh>
+#include <windows.h>
 
 #include "version.h"
 
 #include "res.rh"
-
-//------------------------------------------------------------
-
-#include <owl/except.rc>
 
 //------------------------------------------------------------
 
@@ -48,7 +42,7 @@
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "041103A4" // “ú–{Œê(0x411), ƒVƒtƒgJIS(CP932)(0x3a4)
+        BLOCK "041103A4" // æ—¥æœ¬èª(0x411), ã‚·ãƒ•ãƒˆJIS(CP932)(0x3a4)
         {
             VALUE "CompanyName", VER_COMPANYNAME // "\000"
             VALUE "FileDescription", VER_FILEDESCRIPTION // "\000"
