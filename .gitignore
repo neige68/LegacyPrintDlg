@@ -8,3 +8,5 @@
 TAGS
 files.txt
 *.aps
+.claude/settings.local.json
+.claude/todos/
