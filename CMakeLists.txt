@@ -8,7 +8,6 @@
 
 cmake_minimum_required(VERSION 3.28)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-cmake_policy(SET CMP0167 OLD)
 # スタティックリンク
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
@@ -16,18 +15,6 @@ set(NAME "LegacyPrintDlg")
 message(STATUS "NAME: ${NAME}")
 
 project(${NAME} CXX)
-
-#------------------------------------------------------------
-#
-# boost
-#
-
-find_package(Boost 1.88 REQUIRED)
-message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
-
-include_directories(${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
 
 #------------------------------------------------------------
 

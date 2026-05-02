@@ -8,7 +8,7 @@
 
 add_executable(${NAME} WIN32 main.cpp res.rc resource.rc pch.cpp)
 
-target_link_libraries(${NAME} PRIVATE comctl32)
+target_link_libraries(${NAME} PRIVATE comctl32 bcrypt)
 target_link_options(${NAME} PRIVATE /MANIFEST:NO)
 
 # マニフェスト生成をしない

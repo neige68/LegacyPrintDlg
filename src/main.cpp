@@ -16,9 +16,10 @@
 
 #include "version.h"            // VER_PRODUCTVERSION_STR
 
-#include <boost/hash2/sha2.hpp> // boost::hash2::sha2_512
+#include <bcrypt.h>             // BCryptHashData
 
 #include <algorithm>            // std::equal
+#include <array>                // std::array
 #include <filesystem>           // std::filesystem::path
 #include <format>               // std::format
 #include <fstream>              // std::ifstream
@@ -175,14 +176,23 @@ void WriteTheRegKey(bool legacy, HWND hwnd)
         throw std::runtime_error("File not found: " + fname.string());
     // ハッシュ確認
     {
-        boost::hash2::sha2_512 hasher;
+        BCRYPT_ALG_HANDLE hAlg = nullptr;
+        BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA512_ALGORITHM, nullptr, 0);
+        BCRYPT_HASH_HANDLE hHash = nullptr;
+        BCryptCreateHash(hAlg, &hHash, nullptr, 0, nullptr, 0, 0);
         std::ifstream ifs{fname, std::ios::binary};
-        if (!ifs)
+        if (!ifs) {
+            BCryptDestroyHash(hHash);
+            BCryptCloseAlgorithmProvider(hAlg, 0);
             throw std::runtime_error("Cannot open file: " + fname.string());
+        }
         std::vector<char> buffer(512);
         while (ifs.read(buffer.data(), buffer.size()) || ifs.gcount())
-            hasher.update(buffer.data(), ifs.gcount());
-        auto digest = hasher.result();
+            BCryptHashData(hHash, reinterpret_cast<PUCHAR>(buffer.data()), static_cast<ULONG>(ifs.gcount()), 0);
+        std::array<unsigned char, 64> digest{};
+        BCryptFinishHash(hHash, digest.data(), static_cast<ULONG>(digest.size()), 0);
+        BCryptDestroyHash(hHash);
+        BCryptCloseAlgorithmProvider(hAlg, 0);
         // バイナリとして比較
         if (!std::equal(digest.begin(), digest.end(), reinterpret_cast<const unsigned char*>(hash)))
             throw std::runtime_error("File corrupted: " + fname.string());
